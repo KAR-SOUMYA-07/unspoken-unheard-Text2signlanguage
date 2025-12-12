@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speech to ISL Translator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+  <!-- Import map to load Three.js directly from jsDelivr -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Main Content Area (Full Width) -->
+    <main class="content full-width">
+      <header class="app-header">
+        <div class="header-left">
+          <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" class="logo-icon">
+              <!-- Background Shape -->
+              <rect x="0" y="0" width="50" height="50" rx="10" fill="#4361ee" />
+              <!-- Hand Symbol -->
+              <path d="M25 12 L25 32 Q25 38, 20 38 T15 32 L15 20 Q15 14, 20 14 T25 20" stroke="white" stroke-width="2.5"
+                fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="logo-text">
+              <h1>ISL Translator</h1>
+              <p>Speech to Indian Sign Language</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button id="history-button" class="btn icon-btn" title="History">
+            <i data-feather="clock"></i>
+          </button>
+          <div class="theme-toggle" title="Toggle Dark Mode">
+            <i data-feather="moon"></i>
+          </div>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <div class="input-panel">
+          <div class="input-tabs">
+            <button class="tab-button active" data-tab="voice">
+              <i data-feather="mic"></i>
+              <span>Voice Input</span>
+            </button>
+            <button class="tab-button" data-tab="text">
+              <i data-feather="type"></i>
+              <span>Text Input</span>
+            </button>
+            <!-- This is the new tab indicator -->
+            <div class="tab-indicator"></div>
+          </div>
+          <div class="panel-header">
+            <!-- <h2 id="input-title">Speech Input</h2> -->
+            <div class="controls">
+              <button id="micButton" class="btn primary">
+                <i data-feather="mic"></i>
+                <span>Start Recording</span>
+              </button>
+              <button id="textSubmitButton" class="btn primary" style="display: none;">
+                <i data-feather="send"></i>
+                <span>Translate</span>
+              </button>
+              <button id="clearButton" class="btn secondary">
+                <i data-feather="trash-2"></i>
+                <span>Clear</span>
+              </button>
+            </div>
+          </div>
+          <div class="transcript-container">
+            <textarea id="textInput" placeholder="Type your text here..." style="display: none;"></textarea>
+            <textarea id="transcript" readonly placeholder="Your transcribed text will appear here..."></textarea>
+          </div>
+        </div>
+
+        <div class="output-panel">
+          <div class="grammar-section">
+            <h2>ISL Grammar</h2>
+            <div id="islBox" class="result-box"></div>
+            <!-- New Processed Text Field -->
+            <div class="processed-text-section">
+              <h2>Processed Text</h2>
+              <textarea id="processed-text" readonly placeholder="processed text will appear here..."
+                class="result-box"></textarea>
+            </div>
+          </div>
+
+          <div class="animation-section">
+            <h2>Sign Language Animation</h2>
+            <!-- Animation Speed Control Slider -->
+            <div class="animation-controls">
+              <label for="speedSlider">Animation Speed: <span id="speedValue">1.0x</span></label>
+              <input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="1.0">
+            </div>
+            <!-- The Three.js canvas will be inserted here -->
+            <div id="animationContainer" class="animation-container">
+              <div class="placeholder-animation">
+                <i data-feather="video"></i>
+                <p>Animation will appear here</p>
+              </div>
+            </div>
+            <!-- Hidden element for text tracking (optional if not used) -->
+            <textarea id="output-text" class="hidden"></textarea>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- History Panel -->
+    <div id="history-panel" class="history-panel">
+      <div class="history-header">
+        <h3>Conversion History</h3>
+        <button id="clearHistoryButton">Clear All</button>
+        <button id="close-history" class="btn icon-btn">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
